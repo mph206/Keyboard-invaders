@@ -2,14 +2,18 @@
   box-sizing: border-box;
   margin: 0 auto;
   padding: 0;
+  font-family: 'Press Start 2P', cursive;
 }
 
 body {
+  padding: 3px;
   text-align: center;
-
+  background-color: black;
+  color: #3FFF46;
+  
   section {
-    border: 2px solid black;
-    width: 98vw;
+    border: 2px solid white;
+    width: 100%;
     height: 70vh;
     text-align: justify;
     padding: 5px;
@@ -175,6 +179,7 @@ body {
     }
     100% {
       transform: translate(40%, calc(2.8vh*25));
+      color: red;
     }
   }
 

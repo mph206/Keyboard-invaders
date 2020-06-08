@@ -44,7 +44,8 @@ startButton.addEventListener('click', () => {
 // console.log(generatedWord(letterArray));
 
 // Generate word array from string
-let string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error saepe libero quaerat harum quas dignissimos corrupti, hic esse mollitia ipsam explicabo vitae obcaecati quisquam eum, et repellendus! Odio, facilis atque. Lorem ipsum dolor sit amet consectetur adipisicing elit.";
+// http://www.gutenberg.org/files/36/36-h/36-h.htm
+let string = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man’s and yet as mortal as his own.";
 
 wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
 console.log(wordArray);
