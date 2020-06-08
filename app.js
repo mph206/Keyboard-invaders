@@ -1,6 +1,7 @@
 // Get HTML elements
 const gameContainer = document.querySelector('#game-container');
 const startButton = document.querySelector('button');
+const wordContainer = document.querySelector('#word-container');
 
 // Create variables 
 let gameOver = 0;
@@ -43,12 +44,28 @@ startButton.addEventListener('click', () => {
 // console.log(generatedWord(letterArray));
 
 // Generate word array from string
-let string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error saepe libero quaerat harum quas dignissimos corrupti, hic esse mollitia ipsam explicabo vitae obcaecati quisquam eum, et repellendus! Odio, facilis atque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima facere quidem cupiditate expedita, neque maiores blanditiis ex porro assumenda vitae amet rerum sequi, quos ab dignissimos illum, aspernatur ducimus. Earum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa voluptates iusto quas eius, nesciunt eos labore. Placeat consequatur nihil tempore magnam, id repellat asperiores, eveniet rem architecto itaque suscipit veniam";
+let string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error saepe libero quaerat harum quas dignissimos corrupti, hic esse mollitia ipsam explicabo vitae obcaecati quisquam eum, et repellendus! Odio, facilis atque. Lorem ipsum dolor sit amet consectetur adipisicing elit.";
 
 wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
 console.log(wordArray);
 
+// Show words in box
+// gameContainer.append(wordArray);
+
+wordArray.forEach(word => {
+    wordContainer.innerHTML += `<span>${word} </span>`;
+})
+
 // Animate words coming across and down - push words onto new array
+
+// Words moving down
+const wordsDown = () => {
+    setTimeout(() => {
+        wordContainer.classList.add('move-down');
+    }, 1500)
+}
+wordsDown();
+
 
 // Capture player types
 
