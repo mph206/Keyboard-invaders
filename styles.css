@@ -1,0 +1,17 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+}
+
+body {
+  text-align: center;
+}
+
+body section {
+  border: 2px solid black;
+  width: 90vw;
+  height: 70vh;
+}
+/*# sourceMappingURL=styles.css.map */
