@@ -1,4 +1,4 @@
-$animation-duration: 6s;
+$animation-duration: 10s;
 
 * {
   box-sizing: border-box;
@@ -12,6 +12,7 @@ body {
   text-align: center;
   background-color: black;
   color: #3FFF46;
+  // z-index: 2;
   
   section {
     border: 2px solid white;
@@ -22,10 +23,11 @@ body {
     padding: 5px 20% 5px 5px;
     text-align: justify;
     position: relative;
-
+    
     span {
       display: inline-block;
       margin-right: 10px;
+      // z-index: 1; 
     }
 
   }
@@ -66,5 +68,30 @@ body {
 
   .delete {
     color: red;
+  }
+
+  @keyframes game-over {
+    from {
+      transform: scale(0, 0);
+    }
+    to {
+      transform: scale(1, 1);
+    }
+  }
+
+  .game-over-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+  }
+
+  .game-over {
+    text-transform: uppercase;
+    animation-name: game-over;
+    animation-duration: 1s;
+    position: absolute;
+    font-size: 50px;
+    // transform: translateY(-50%);
   }
 }

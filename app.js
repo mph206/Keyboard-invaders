@@ -6,10 +6,14 @@ let wordsTyped = 0;
 let wordArray = [];
 let score = 0;
 
+
 // Start/reset game
 document.querySelector('button').addEventListener('click', () => {
+    gameContainer.innerHTML = '';
+    gameContainer.classList.remove('game-over-container');
     gameOver = 0;
     wordsTyped = 0;
+    wordArray = [];
     generateWordArray(string);
     wordsDown();
 })
@@ -45,7 +49,6 @@ const wordsDown = () => {
             gameContainer.children[i].classList.remove('left-to-right');
             gameContainer.children[i].classList.add('left-to-right');
         }
-        gameContainer.classList.remove('padding-grow');
         gameContainer.classList.add('padding-grow');
         checkPos();
     }, 1500)
@@ -72,14 +75,13 @@ const checkArray = () => {
     })
 }
 
-// End game when word reaches bottom - checks if any words 
-
+// Trigger end game when word reaches bottom - checks if any words 
 const checkPosition = () => {
-if (gameOver == 0 || score == 0) {
+if (gameOver == 0 && score == 0) {
     for (let i = 0; i < gameContainer.children.length; i++) {
         if (gameContainer.children[i].classList.contains('delete') === false
-        && (gameContainerHeight - gameContainer.children[i].offsetTop) < 1) {
-            gameOver = 1;
+        && (gameContainerHeight - gameContainer.children[i].offsetTop - 48) < 1) {
+            endGame();
         }
     console.log('fired');
 }}}
@@ -87,7 +89,14 @@ if (gameOver == 0 || score == 0) {
 // call checkPosition each 100ms
 const checkPos = () => setInterval(checkPosition, 100);
 
-// const callCheckPosition = setInterval(checkPosition, 1000);
+// Show end game screen 
+const endGame = () => {
+    clearInterval(checkPos);
+    gameOver = 1;
+    gameContainer.classList.remove('padding-grow');
+    gameContainer.classList.add('game-over-container');
+    gameContainer.innerHTML = '<h2 class="game-over">game over</h2>';
+}
     
 // Non-MVP:
 // Show player progress in word
