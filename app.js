@@ -1,41 +1,20 @@
-// Get HTML elements
+// Variables and selectors
 const gameContainer = document.querySelector('#game-container');
-const startButton = document.querySelector('button');
-const wordContainer = document.querySelector('#word-container');
-
-// Create variables 
+let gameContainerHeight = window.innerHeight*0.7;
 let gameOver = 0;
 let wordsTyped = 0;
 let wordArray = [];
+let score = 0;
 
 // Start/reset game
-startButton.addEventListener('click', () => {
+document.querySelector('button').addEventListener('click', () => {
     gameOver = 0;
     wordsTyped = 0;
-    wordArray = 0;
+    generateWordArray(string);
+    wordsDown();
 })
 
-// Import dictionary and create random words
-
-// Fetch 100 words from API
-// const callAPI = () => {
-//     const Http = new XMLHttpRequest();
-//     const url='https://random-word-api.herokuapp.com/word?number=100';
-//     Http.open("GET", url);
-//     Http.send();
-
-//     Http.onreadystatechange = () => {
-//     console.log(Http.responseText)
-//     }
-// }
-// callAPI();
-
-// let generatedWord = () => {
-//     ParseInt(Math.random() * 100);
-// }
-
 // Generate random 'words'
-
 // const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 // let generatedWord = (array) => {
@@ -45,49 +24,76 @@ startButton.addEventListener('click', () => {
 
 // Generate word array from string
 // http://www.gutenberg.org/files/36/36-h/36-h.htm
-let string = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man’s and yet as mortal as his own.";
+// Check for words with funny apostrophe (check when sourcing text)
+let string = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own.";
 
-wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
-console.log(wordArray);
+const generateWordArray = (string) => {
+    if (wordArray.length < 1) {
+        wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
+        console.log(wordArray)
+        wordArray.forEach(word => {
+            gameContainer.innerHTML += `<span>${word}</span>`;
+        })
+        console.log(gameContainer);
+    }
+}
 
-// Show words in box
-// gameContainer.append(wordArray);
-
-wordArray.forEach(word => {
-    wordContainer.innerHTML += `<span>${word} </span>`;
-})
-
-// Animate words coming across and down - push words onto new array
-
-// Words moving down
+// Start words moving down
 const wordsDown = () => {
     setTimeout(() => {
-        wordContainer.classList.add('move-down');
+        for (let i = 0; i < gameContainer.children.length; i++) {
+            gameContainer.children[i].classList.remove('left-to-right');
+            gameContainer.children[i].classList.add('left-to-right');
+        }
+        gameContainer.classList.remove('padding-grow');
+        gameContainer.classList.add('padding-grow');
+        checkPos();
     }, 1500)
 }
-wordsDown();
 
-
-// Capture player types
-
-// // Keyboard event info: https://javascript.info/keyboard-events
-// document.addEventListener('keydown', (event) => {
-//     // if (event.key == 'z') {
-//       console.log(event.key);
-//     // }
-//   });
+// Capture player physical keyboard input
+let lettersTyped = '';
+document.addEventListener('keydown', (event) => {
+    lettersTyped += event.key;
+    checkArray();
+  });
 
 // Handle keyboard input for mobile
+// lettersTyped.push(document.querySelector('input').value);
+// console.log(lettersTyped);
 
 // Delete words when player has typed
+// TO FIX: Doesn't take repeated words
+const checkArray = () => {
+    wordArray.forEach((word) => {
+        if (lettersTyped.includes(word, lettersTyped.length-20)) {
+            gameContainer.children[wordArray.indexOf(word)].classList.add('delete');
+        }
+    })
+}
 
-// Game over when word reaches bottom
+// End game when word reaches bottom - checks if any words 
 
+const checkPosition = () => {
+if (gameOver == 0 || score == 0) {
+    for (let i = 0; i < gameContainer.children.length; i++) {
+        if (gameContainer.children[i].classList.contains('delete') === false
+        && (gameContainerHeight - gameContainer.children[i].offsetTop) < 1) {
+            gameOver = 1;
+        }
+    console.log('fired');
+}}}
+
+// call checkPosition each 100ms
+const checkPos = () => setInterval(checkPosition, 100);
+
+// const callCheckPosition = setInterval(checkPosition, 1000);
+    
 // Non-MVP:
 // Show player progress in word
 // Words firing letters at player
 // Alter difficulty (speed/word length) 
+// Alter text source
 // Keep tally of words typed & wpm 
 
-// - MUST make use of functions to neatly organise code.
 // - MUST be hosted on your Github with at least 15 git commits.
