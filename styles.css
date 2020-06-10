@@ -69,11 +69,11 @@ body section span {
   }
 }
 
-body .padding-sides {
+body .move-words-down {
   -webkit-animation-name: padding-sides, padding-grow;
           animation-name: padding-sides, padding-grow;
-  -webkit-animation-duration: calc(80s / 12), 80s;
-          animation-duration: calc(80s / 12), 80s;
+  -webkit-animation-duration: calc(8s / 12), 8s;
+          animation-duration: calc(8s / 12), 8s;
   -webkit-animation-timing-function: steps(8), steps(12);
           animation-timing-function: steps(8), steps(12);
   -webkit-animation-fill-mode: both, both;
@@ -88,7 +88,7 @@ body .delete {
   color: red;
 }
 
-@-webkit-keyframes game-over {
+@-webkit-keyframes end-game {
   from {
     -webkit-transform: scale(0, 0);
             transform: scale(0, 0);
@@ -99,7 +99,7 @@ body .delete {
   }
 }
 
-@keyframes game-over {
+@keyframes end-game {
   from {
     -webkit-transform: scale(0, 0);
             transform: scale(0, 0);
@@ -110,7 +110,7 @@ body .delete {
   }
 }
 
-body .game-over-container {
+body .end-game-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -121,15 +121,18 @@ body .game-over-container {
       -ms-flex-pack: center;
           justify-content: center;
   padding: 5px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
-body .game-over {
+body .end-game {
+  -webkit-animation-name: end-game;
+          animation-name: end-game;
   text-transform: uppercase;
-  -webkit-animation-name: game-over;
-          animation-name: game-over;
   -webkit-animation-duration: 1s;
           animation-duration: 1s;
-  position: absolute;
   font-size: 50px;
 }
 /*# sourceMappingURL=styles.css.map */

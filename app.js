@@ -1,18 +1,18 @@
 // Variables and selectors
 const gameContainer = document.querySelector('#game-container');
 let gameContainerHeight = window.innerHeight*0.7;
-let gameOver = 0;
+let lossCount = 0;
+let winCount = 0;
 let wordsTyped = 0;
 let wordArray = [];
-let score = 0;
+let wordsPerMinute = 0;
 
 
 // Start/reset game
 document.querySelector('button').addEventListener('click', () => {
     clearInterval(checkPos);
-    gameContainer.classList.remove('padding-grow', 'padding-sides', 'game-over-container');
+    gameContainer.classList.remove('move-words-down', 'game-over-container');
     gameContainer.innerHTML = '';
-    gameOver = 0;
     wordsTyped = 0;
     wordArray = [];
     generateWordArray(string);
@@ -46,7 +46,7 @@ const generateWordArray = (string) => {
 // Start words moving down
 const wordsDown = () => {
     setTimeout(() => {
-        gameContainer.classList.add('padding-sides');
+        gameContainer.classList.add('move-words-down');
         checkPos();
     }, 100)
 }
@@ -68,39 +68,63 @@ document.addEventListener('keydown', (event) => {
 
 // Delete words when player has typed
 // TO FIX: does all words at once, need to change to just the one nearest end of array
+deletedWords = 0;
 const checkArray = () => {
     wordArray.forEach((word, index) => {
         if (lettersTyped.includes(word, lettersTyped.length-20)) {
             // gameContainer.children[wordArray.indexOf(word)].classList.add('delete');
             gameContainer.children[index].classList.add('delete');
+            deletedWords += 1;
+            checkWordsDeleted();
         }
     })
+}
+
+// Trigger win screen if win condition is met 
+const checkWordsDeleted = () => {
+    if (wordArray.length === deletedWords) {
+        console.log('win');
+        roundWin();
+    }
+    console.log(`${deletedWords} of ${wordArray.length}`);
 }
 
 // Trigger end game when word reaches bottom
 // Check if if statment is needed 
 // Could create new array with the destroyed words - make sure it checks from end to start
 const checkPosition = () => {
-if (gameOver === 0 && score === 0) {
     for (let i = 0; i < gameContainer.children.length; i++) {
         if (!gameContainer.children[i].classList.contains('delete')
         && (gameContainerHeight - gameContainer.children[i].offsetTop - 48) < 0) {
-            endGame();
+            gameOver();
         }
     console.log('fired');
-}}}
+}}
 
 // call checkPosition each 100ms
 // Only call after words would reach bottom and also only when words move down a line
 const checkPos = () => setInterval(checkPosition, 300);
 
-// Show end game screen 
-const endGame = () => {
+// End round actions 
+const endRound = () => {
     clearInterval(checkPos);
-    gameOver = 1;
-    gameContainer.classList.remove('padding-grow', 'padding-sides');
-    gameContainer.classList.add('game-over-container');
-    gameContainer.innerHTML = '<h2 class="game-over">game over</h2>';
+    gameContainer.classList.remove('move-words-down');
+    gameContainer.classList.add('end-game-container');
+}
+
+// Show round win screen
+const roundWin = (deletedWords) => {
+    endRound();
+    winCount += 1;   
+    gameContainer.innerHTML = '<h2 class="end-game">round won</h2>';
+}
+
+// Show game over screen 
+const gameOver = () => {
+    endRound();
+    lossCount += 1;
+    gameContainer.innerHTML = 
+        `<h2 class="end-game">game over</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
 }
     
 // Non-MVP:

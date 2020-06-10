@@ -1,4 +1,4 @@
-$animation-duration: 80s;
+$animation-duration: 8s;
 
 // Start game styles
 * {
@@ -52,7 +52,7 @@ body {
     }
   }
 
-  .padding-sides {
+  .move-words-down {
     animation-name: padding-sides, padding-grow;
     animation-duration: calc(#{$animation-duration} / 12), $animation-duration;
     animation-timing-function: steps(8), steps(12);
@@ -67,7 +67,7 @@ body {
   }
 
   // Game over classes
-  @keyframes game-over {
+  @keyframes end-game {
     from {
       transform: scale(0, 0);
     }
@@ -76,18 +76,19 @@ body {
     }
   }
 
-  .game-over-container {
+  .end-game-container {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px;
+    flex-direction: column;
   }
 
-  .game-over {
+  .end-game {
+    animation-name: end-game;    
     text-transform: uppercase;
-    animation-name: game-over;
     animation-duration: 1s;
-    position: absolute;
+    // position: absolute;
     font-size: 50px;
   }
 }
