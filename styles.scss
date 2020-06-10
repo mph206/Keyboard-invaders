@@ -1,5 +1,6 @@
-$animation-duration: 10s;
+$animation-duration: 80s;
 
+// Start game styles
 * {
   box-sizing: border-box;
   margin: 0 auto;
@@ -12,42 +13,34 @@ body {
   text-align: center;
   background-color: black;
   color: #3FFF46;
-  // z-index: 2;
   
   section {
     border: 2px solid white;
     width: 100%;
     height: 70vh;
-    max-height: 70vh;
-    max-width: 100%;
-    padding: 5px 20% 5px 5px;
+    // max-height: 70vh;
+    max-width: 600px;
+    padding: 5px 10% 5px 5px;
     text-align: justify;
     position: relative;
+    overflow-y: hidden;
     
     span {
       display: inline-block;
       margin-right: 10px;
-      // z-index: 1; 
     }
-
   }
 
-  @keyframes left-to-right {
+  // Animations for moving words across and down
+  @keyframes padding-sides {
     from {
-      transform: translateX(0);
+      padding-left: 5px;
+      padding-right: 10%;
     }
     to {
-      transform: translateX(20vw);
+      padding-left: 10%;
+      padding-right: 5px;
     }
-  }
-
-  .left-to-right {
-    animation-name: left-to-right;
-    animation-duration: calc(#{$animation-duration} / 12);
-    animation-timing-function: steps(24);
-    animation-fill-mode: both;
-    animation-iteration-count: 12;
-    animation-direction: alternate-reverse;
   }
 
   @keyframes padding-grow {
@@ -59,17 +52,21 @@ body {
     }
   }
 
-  .padding-grow {
-    animation-name: padding-grow;
-    animation-duration: $animation-duration;
-    animation-timing-function: steps(12);
-    animation-fill-mode: both;
+  .padding-sides {
+    animation-name: padding-sides, padding-grow;
+    animation-duration: calc(#{$animation-duration} / 12), $animation-duration;
+    animation-timing-function: steps(8), steps(12);
+    animation-fill-mode: both, both;
+    animation-iteration-count: 12, 24;
+    animation-direction: alternate, normal;
   }
 
+  // Animation for typed words
   .delete {
     color: red;
   }
 
+  // Game over classes
   @keyframes game-over {
     from {
       transform: scale(0, 0);
@@ -92,6 +89,5 @@ body {
     animation-duration: 1s;
     position: absolute;
     font-size: 50px;
-    // transform: translateY(-50%);
   }
 }
