@@ -1,19 +1,20 @@
 // Variables and selectors
+// Move out of global scope
 const gameContainer = document.querySelector('#game-container');
-let gameContainerHeight = window.innerHeight*0.7;
+let gameContainerHeight = window.innerHeight * 0.7;
 let lossCount = 0;
 let winCount = 0;
-let wordsTyped = 0;
 let wordArray = [];
 let wordsPerMinute = 0;
+let lettersTyped = '';
 
 
 // Start/reset game
 document.querySelector('button').addEventListener('click', () => {
-    clearInterval(checkPos);
-    gameContainer.classList.remove('move-words-down', 'game-over-container');
+    // clearInterval(checkPos);
+    lettersTyped = '';
     gameContainer.innerHTML = '';
-    wordsTyped = 0;
+    gameContainer.classList.remove('move-words-down', 'end-game-container');
     wordArray = [];
     generateWordArray(string);
     wordsDown();
@@ -35,24 +36,25 @@ let string = "No one would have believed in the last years of the nineteenth cen
 const generateWordArray = (string) => {
     if (wordArray.length < 1) {
         wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
-        console.log(wordArray)
         wordArray.forEach(word => {
             gameContainer.innerHTML += `<span>${word}</span>`;
         })
-        console.log(gameContainer);
     }
 }
 
 // Start words moving down
-const wordsDown = () => {
+let wordsDown = () => {
     setTimeout(() => {
         gameContainer.classList.add('move-words-down');
         checkPos();
     }, 100)
 }
 
+// Start timer - need to move into function and still be able to return value
+const startTime = new Date();
+
+
 // Capture player physical keyboard input
-let lettersTyped = '';
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Backspace') {
         lettersTyped = lettersTyped.slice(0, -1);
@@ -68,63 +70,74 @@ document.addEventListener('keydown', (event) => {
 
 // Delete words when player has typed
 // TO FIX: does all words at once, need to change to just the one nearest end of array
-deletedWords = 0;
 const checkArray = () => {
     wordArray.forEach((word, index) => {
-        if (lettersTyped.includes(word, lettersTyped.length-20)) {
+        if (lettersTyped.includes(word)) {
             // gameContainer.children[wordArray.indexOf(word)].classList.add('delete');
             gameContainer.children[index].classList.add('delete');
-            deletedWords += 1;
             checkWordsDeleted();
         }
     })
 }
 
-// Trigger win screen if win condition is met 
+// Compares words with class of deleted against length of array; if equals triggers roundWin
 const checkWordsDeleted = () => {
+    let deletedWords = 0;
+    for (let i = 0; i < gameContainer.children.length; i++) {
+        if (gameContainer.children[i].classList.contains('delete')) {
+            deletedWords += 1;
+            console.log(deletedWords)
+        }
+    }
     if (wordArray.length === deletedWords) {
         console.log('win');
         roundWin();
     }
-    console.log(`${deletedWords} of ${wordArray.length}`);
 }
 
 // Trigger end game when word reaches bottom
-// Check if if statment is needed 
-// Could create new array with the destroyed words - make sure it checks from end to start
-const checkPosition = () => {
+const checkPosition = (toggle) => {
+    if (toggle === 1) {
     for (let i = 0; i < gameContainer.children.length; i++) {
         if (!gameContainer.children[i].classList.contains('delete')
         && (gameContainerHeight - gameContainer.children[i].offsetTop - 48) < 0) {
             gameOver();
         }
+    }} else return;
     console.log('fired');
-}}
+}
 
 // call checkPosition each 100ms
 // Only call after words would reach bottom and also only when words move down a line
-const checkPos = () => setInterval(checkPosition, 300);
+const checkPos = (toggle=1) => {if (toggle === 1) {setInterval(checkPosition, 300, 1)} else return};
 
 // End round actions 
 const endRound = () => {
-    clearInterval(checkPos);
+    // clearInterval(checkPos);
+    wordArray = [];
     gameContainer.classList.remove('move-words-down');
     gameContainer.classList.add('end-game-container');
+    // Why doesn't this stop the function? 
+    checkPosition(0);
 }
 
 // Show round win screen
-const roundWin = (deletedWords) => {
-    endRound();
+const roundWin = () => {
+    let endTime = new Date() - startTime;
+    wordsPerMinute = parseInt(endTime / 1000 / wordArray.length * 60);
     winCount += 1;   
-    gameContainer.innerHTML = '<h2 class="end-game">round won</h2>';
+    gameContainer.innerHTML = `<h2 class="end-game">round won</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
+    endRound();
 }
 
 // Show game over screen 
 const gameOver = () => {
-    endRound();
     lossCount += 1;
-    gameContainer.innerHTML = 
-        `<h2 class="end-game">game over</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
+    let endTime = new Date() - startTime;
+    // Need to add words to the below and move to endRound
+    wordsPerMinute = parseInt(endTime / 1000 / wordArray.length * 60);
+    gameContainer.innerHTML = `<h2 class="end-game">game over</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
+    endRound();
 }
     
 // Non-MVP:
@@ -132,7 +145,7 @@ const gameOver = () => {
 // Words firing letters at player
 // Alter difficulty (speed/word length) 
 // Alter text source
-// Keep tally of words typed & wpm 
+// Check that WPM score is correct
 // Animate aliens behind words
 
-// - MUST be hosted on your Github with at least 15 git commits.
+

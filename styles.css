@@ -72,8 +72,8 @@ body section span {
 body .move-words-down {
   -webkit-animation-name: padding-sides, padding-grow;
           animation-name: padding-sides, padding-grow;
-  -webkit-animation-duration: calc(8s / 12), 8s;
-          animation-duration: calc(8s / 12), 8s;
+  -webkit-animation-duration: calc(60s / 12), 60s;
+          animation-duration: calc(60s / 12), 60s;
   -webkit-animation-timing-function: steps(8), steps(12);
           animation-timing-function: steps(8), steps(12);
   -webkit-animation-fill-mode: both, both;
@@ -127,12 +127,23 @@ body .end-game-container {
           flex-direction: column;
 }
 
-body .end-game {
+body .end-game,
+body .round-score {
   -webkit-animation-name: end-game;
           animation-name: end-game;
   text-transform: uppercase;
+  -webkit-animation-timing-function: steps(16);
+          animation-timing-function: steps(16);
   -webkit-animation-duration: 1s;
           animation-duration: 1s;
+  line-height: 1.5em;
+}
+
+body .end-game {
   font-size: 50px;
+}
+
+body .round-score {
+  font-size: 30px;
 }
 /*# sourceMappingURL=styles.css.map */

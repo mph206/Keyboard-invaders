@@ -1,4 +1,4 @@
-$animation-duration: 8s;
+$animation-duration: 60s;
 
 // Start game styles
 * {
@@ -84,11 +84,20 @@ body {
     flex-direction: column;
   }
 
-  .end-game {
+  .end-game, 
+  .round-score {
     animation-name: end-game;    
     text-transform: uppercase;
+    animation-timing-function: steps(16);
     animation-duration: 1s;
-    // position: absolute;
+    line-height: 1.5em;
+  }
+
+  .end-game {
     font-size: 50px;
+  }
+
+  .round-score {
+    font-size: 30px;
   }
 }
