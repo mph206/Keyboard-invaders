@@ -8,10 +8,8 @@ let wordArray = [];
 let wordsPerMinute = 0;
 let lettersTyped = '';
 
-
 // Start/reset game
 document.querySelector('button').addEventListener('click', () => {
-    // clearInterval(checkPos);
     lettersTyped = '';
     gameContainer.innerHTML = '';
     gameContainer.classList.remove('move-words-down', 'end-game-container');
@@ -31,7 +29,8 @@ document.querySelector('button').addEventListener('click', () => {
 // Generate word array from string
 // http://www.gutenberg.org/files/36/36-h/36-h.htm
 // Check for words with funny apostrophe (check when sourcing text)
-let string = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own.";
+let string = "No one would have believed in the last years of the nineteenth century that"
+//  this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own.";
 
 const generateWordArray = (string) => {
     if (wordArray.length < 1) {
@@ -52,7 +51,6 @@ let wordsDown = () => {
 
 // Start timer - need to move into function and still be able to return value
 const startTime = new Date();
-
 
 // Capture player physical keyboard input
 document.addEventListener('keydown', (event) => {
@@ -86,11 +84,9 @@ const checkWordsDeleted = () => {
     for (let i = 0; i < gameContainer.children.length; i++) {
         if (gameContainer.children[i].classList.contains('delete')) {
             deletedWords += 1;
-            console.log(deletedWords)
         }
     }
     if (wordArray.length === deletedWords) {
-        console.log('win');
         roundWin();
     }
 }
@@ -99,8 +95,12 @@ const checkWordsDeleted = () => {
 const checkPosition = (toggle) => {
     if (toggle === 1) {
     for (let i = 0; i < gameContainer.children.length; i++) {
+        console.log(gameContainerHeight)
+        console.log(gameContainer.children[i].offsetTop);
+        console.log(gameContainerHeight - gameContainer.children[i].offsetTop);
+
         if (!gameContainer.children[i].classList.contains('delete')
-        && (gameContainerHeight - gameContainer.children[i].offsetTop - 48) < 0) {
+        && (gameContainerHeight - gameContainer.children[i].offsetTop + 18) < 1) {
             gameOver();
         }
     }} else return;
@@ -141,6 +141,7 @@ const gameOver = () => {
 }
     
 // Non-MVP:
+// Fix span detection at bottom of parent container
 // Show player progress in word
 // Words firing letters at player
 // Alter difficulty (speed/word length) 
