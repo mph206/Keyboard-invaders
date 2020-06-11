@@ -16,10 +16,7 @@ body {
 body section {
   border: 2px solid white;
   width: 100%;
-  height: 70vh;
-  max-height: 70vh;
-  max-width: 600px;
-  padding: 5px 10% 5px 5px;
+  height: 80vh;
   text-align: justify;
   position: relative;
   overflow: hidden;
@@ -34,6 +31,14 @@ body section {
       flex-wrap: wrap;
   -ms-flex-line-pack: start;
       align-content: flex-start;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+@media screen and (min-width: 900px) {
+  body section {
+    width: 900px;
+  }
 }
 
 body section div {
@@ -44,7 +49,13 @@ body section div {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  height: 60px;
+  height: 40px;
+}
+
+@media screen and (min-width: 600px) {
+  body section div {
+    height: 60px;
+  }
 }
 
 @-webkit-keyframes laser {
@@ -80,14 +91,19 @@ body section svg line {
           animation-duration: 0.2s;
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
-  -webkit-animation-direction: normal;
-          animation-direction: normal;
 }
 
 body section span {
   margin-right: 5px;
   margin-left: 5px;
   color: white;
+  font-size: 0.8em;
+}
+
+@media screen and (min-width: 600px) {
+  body section span {
+    font-size: 1em;
+  }
 }
 
 body .space-invader-down {
@@ -97,12 +113,18 @@ body .space-invader-down {
 }
 
 body #player-ship {
-  width: 70px;
+  width: 40px;
   position: absolute;
   bottom: 0;
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
+}
+
+@media screen and (min-width: 600px) {
+  body #player-ship {
+    width: 70px;
+  }
 }
 
 @-webkit-keyframes padding-sides {
@@ -152,8 +174,6 @@ body .move-words-down {
           animation-duration: calc(100s / 12), 100s;
   -webkit-animation-timing-function: steps(8), steps(12);
           animation-timing-function: steps(8), steps(12);
-  -webkit-animation-fill-mode: both, both;
-          animation-fill-mode: both, both;
   -webkit-animation-iteration-count: 12, 24;
           animation-iteration-count: 12, 24;
   -webkit-animation-direction: alternate, normal;

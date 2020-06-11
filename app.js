@@ -7,13 +7,13 @@ let winCount = 0;
 let wordArray = [];
 let wordsPerMinute = 0;
 let lettersTyped = '';
-
-
+let sound = new Audio('./laser.wav');
+let sound2 = new Audio('./laser2.wav');
 
 // Start/reset game
 document.querySelector('button').addEventListener('click', () => {
     lettersTyped = '';
-    gameContainer.innerHTML = '<img id="player-ship" src="./img/player-ship.png" alt="player"><svg></svg>';
+    gameContainer.innerHTML = '<img id="player-ship" src="./img/player-ship.png" alt="player"><svg></svg>'; 
     gameContainer.classList.remove('move-words-down', 'end-game-container');
     wordArray = [];
     generateWordArray(string);
@@ -79,6 +79,7 @@ inputHandler = () => {
 input.addEventListener('input', inputHandler);
 
 // Delete words when player has typed
+// TODO: delete words from bottom first rather than top
 const checkArray = () => {
     wordArray.forEach((word, index) => {
         if (lettersTyped.includes(word) && !gameContainer.children[index].classList.contains('delete')) {
@@ -111,10 +112,11 @@ const checkWordsDeleted = () => {
 let createLaser = (wordX, wordY) => {
     let ship = document.getElementById('player-ship');
     shipLeftOffset = ship.offsetLeft + (window.getComputedStyle(ship).getPropertyValue('width').slice(0, -2) / 2)
-    console.log(shipLeftOffset);
-    console.log(ship.offsetTop);
     let svgBox = document.querySelector('svg');
-    svgBox.innerHTML = `<line x1="300" y1="${ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`
+    svgBox.innerHTML = `<line x1="${window.getComputedStyle(gameContainer).getPropertyValue('width').slice(0, -2) / 2}" y1="${ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`
+    let random = Math.floor(Math.random() * 2) + 1;
+    if (random === 1) sound.play()
+    else sound2.play();
 }
 
 // Trigger end game when word reaches bottom
@@ -123,7 +125,7 @@ const checkPosition = (toggle) => {
     for (let i = 0; i < gameContainer.children.length; i++) {
         if (!gameContainer.children[i].classList.contains('delete')
         && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) {
-            gameOver();
+            // gameOver();
         }
     }} else return;
     console.log('fired');
@@ -169,5 +171,5 @@ const gameOver = () => {
 // Alter text source
 // Check that WPM score is correct
 // Animate aliens behind words
-// EMs for scale
+// ems for scale on mobile
 // Animate ship and make non-static laser
