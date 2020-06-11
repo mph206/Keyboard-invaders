@@ -22,12 +22,24 @@ body section {
   padding: 5px 10% 5px 5px;
   text-align: justify;
   position: relative;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 body section span {
   display: inline-block;
   margin-right: 10px;
+}
+
+body .space-invader {
+  background-size: contain;
+  width: 100%;
+  background-color: black;
+  color: #3FFF46;
+}
+
+body .player-ship {
+  background-color: black;
+  color: #3FFF46;
 }
 
 @-webkit-keyframes padding-sides {
@@ -57,7 +69,7 @@ body section span {
     padding-top: 5px;
   }
   to {
-    padding-top: calc(100% - 5px);
+    padding-top: calc(100% - 20px);
   }
 }
 
@@ -66,17 +78,17 @@ body section span {
     padding-top: 5px;
   }
   to {
-    padding-top: calc(100% - 5px);
+    padding-top: calc(100% - 20px);
   }
 }
 
 body .move-words-down {
   -webkit-animation-name: padding-sides, padding-grow;
           animation-name: padding-sides, padding-grow;
-  -webkit-animation-duration: calc(2s / 12), 2s;
-          animation-duration: calc(2s / 12), 2s;
-  -webkit-animation-timing-function: steps(8), steps(12);
-          animation-timing-function: steps(8), steps(12);
+  -webkit-animation-duration: calc(100s / 12), 100s;
+          animation-duration: calc(100s / 12), 100s;
+  -webkit-animation-timing-function: steps(8), steps(100);
+          animation-timing-function: steps(8), steps(100);
   -webkit-animation-fill-mode: both, both;
           animation-fill-mode: both, both;
   -webkit-animation-iteration-count: 12, 24;

@@ -1,4 +1,4 @@
-$animation-duration: 2s;
+$animation-duration: 100s;
 
 // Start game styles
 * {
@@ -23,12 +23,25 @@ body {
     padding: 5px 10% 5px 5px;
     text-align: justify;
     position: relative;
-    overflow-y: hidden;
+    overflow: hidden;
+  
     
     span {
       display: inline-block;
       margin-right: 10px;
     }
+  }
+
+  .space-invader {
+    background-size: contain;
+    width: 100%;
+    background-color: black;
+    color: #3FFF46;
+  }
+
+  .player-ship {
+    background-color: black;
+    color: #3FFF46;
   }
 
   // Animations for moving words across and down
@@ -48,14 +61,14 @@ body {
       padding-top: 5px;
     }
     to {
-      padding-top: calc(100% - 5px);
+      padding-top: calc(100% - 20px);
     }
   }
 
   .move-words-down {
     animation-name: padding-sides, padding-grow;
     animation-duration: calc(#{$animation-duration} / 12), $animation-duration;
-    animation-timing-function: steps(8), steps(12);
+    animation-timing-function: steps(8), steps(100);
     animation-fill-mode: both, both;
     animation-iteration-count: 12, 24;
     animation-direction: alternate, normal;

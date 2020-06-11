@@ -29,8 +29,7 @@ document.querySelector('button').addEventListener('click', () => {
 // Generate word array from string
 // http://www.gutenberg.org/files/36/36-h/36-h.htm
 // Check for words with funny apostrophe (check when sourcing text)
-let string = "No one would have believed in the last years of the nineteenth century that"
-//  this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own.";
+let string = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own.";
 
 const generateWordArray = (string) => {
     if (wordArray.length < 1) {
@@ -62,9 +61,13 @@ document.addEventListener('keydown', (event) => {
     checkArray();
   });
 
-// Handle keyboard input for mobile
-// lettersTyped.push(document.querySelector('input').value);
-// console.log(lettersTyped);
+// Handles keyboard input in text box (required for mobile)
+    let input = document.querySelector('input');
+    inputHandler = () => {
+        lettersTyped += input.value;
+        checkArray();
+    }  
+  input.addEventListener('input', inputHandler);
 
 // Delete words when player has typed
 // TO FIX: does all words at once, need to change to just the one nearest end of array
@@ -95,12 +98,9 @@ const checkWordsDeleted = () => {
 const checkPosition = (toggle) => {
     if (toggle === 1) {
     for (let i = 0; i < gameContainer.children.length; i++) {
-        console.log(gameContainerHeight)
-        console.log(gameContainer.children[i].offsetTop);
-        console.log(gameContainerHeight - gameContainer.children[i].offsetTop);
-
+        // console.log(`contHeight: ${gameContainerHeight} offsettop:${gameContainer.children[i].offsetTop}`);
         if (!gameContainer.children[i].classList.contains('delete')
-        && (gameContainerHeight - gameContainer.children[i].offsetTop + 18) < 1) {
+        && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) {
             gameOver();
         }
     }} else return;
@@ -109,7 +109,7 @@ const checkPosition = (toggle) => {
 
 // call checkPosition each 100ms
 // Only call after words would reach bottom and also only when words move down a line
-const checkPos = (toggle=1) => {if (toggle === 1) {setInterval(checkPosition, 300, 1)} else return};
+const checkPos = (toggle=1) => {if (toggle === 1) {setInterval(checkPosition, 100, 1)} else return};
 
 // End round actions 
 const endRound = () => {
@@ -141,12 +141,9 @@ const gameOver = () => {
 }
     
 // Non-MVP:
-// Fix span detection at bottom of parent container
 // Show player progress in word
 // Words firing letters at player
 // Alter difficulty (speed/word length) 
 // Alter text source
 // Check that WPM score is correct
 // Animate aliens behind words
-
-
