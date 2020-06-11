@@ -122,12 +122,13 @@ let createLaser = (wordX, wordY) => {
 // Trigger end game when word reaches bottom
 const checkPosition = (toggle) => {
     if (toggle === 1) {
-    for (let i = 0; i < gameContainer.children.length; i++) {
+    for (let i = 0; i < gameContainer.children.length-2; i++) {
         if (!gameContainer.children[i].classList.contains('delete')
+        // Check this is still bottom of div
         && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) {
-            // gameOver();
+            gameOver();
         }
-    }} else return;
+    }}
     console.log('fired');
 }
 

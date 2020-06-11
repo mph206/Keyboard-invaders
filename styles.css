@@ -170,8 +170,8 @@ body #player-ship {
 body .move-words-down {
   -webkit-animation-name: padding-sides, padding-grow;
           animation-name: padding-sides, padding-grow;
-  -webkit-animation-duration: calc(100s / 12), 100s;
-          animation-duration: calc(100s / 12), 100s;
+  -webkit-animation-duration: calc(60s / 12), 60s;
+          animation-duration: calc(60s / 12), 60s;
   -webkit-animation-timing-function: steps(8), steps(12);
           animation-timing-function: steps(8), steps(12);
   -webkit-animation-iteration-count: 12, 24;
