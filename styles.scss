@@ -24,35 +24,49 @@ body {
     text-align: justify;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
   
+    // Containers for space invader and words
+    div {
+      display: flex;
+      flex-direction: column;
+      height: 60px;
+    }
     
     span {
-      display: inline-block;
-      margin-right: 10px;
+      margin-right: 5px;
+      margin-left: 5px;
+      color: white;
     }
   }
 
-  .space-invader {
+  // Space invaders
+  .space-invader-down {
+    width: 45px;
+    border: 0px solid white;
     background-size: contain;
-    width: 100%;
-    background-color: black;
-    color: #3FFF46;
   }
 
   .player-ship {
-    background-color: black;
-    color: #3FFF46;
+    width: 70px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   // Animations for moving words across and down
   @keyframes padding-sides {
     from {
-      padding-left: 5px;
+      padding-left: 0;
       padding-right: 10%;
     }
     to {
       padding-left: 10%;
-      padding-right: 5px;
+      padding-right: 0;
     }
   }
 
@@ -68,15 +82,28 @@ body {
   .move-words-down {
     animation-name: padding-sides, padding-grow;
     animation-duration: calc(#{$animation-duration} / 12), $animation-duration;
-    animation-timing-function: steps(8), steps(100);
+    animation-timing-function: steps(8), steps(12);
     animation-fill-mode: both, both;
     animation-iteration-count: 12, 24;
     animation-direction: alternate, normal;
   }
 
-  // Animation for typed words
+  // Animation for deleting words and invaders
+  @keyframes delete {
+    0% {
+      opacity: 1; 
+      background-color: red;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
   .delete {
-    color: red;
+    animation-name: delete;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 3;
   }
 
   // Game over classes
@@ -90,8 +117,7 @@ body {
   }
 
   .end-game-container {
-    display: flex;
-    align-items: center;
+    align-content: center;
     justify-content: center;
     padding: 5px;
     flex-direction: column;

@@ -1,5 +1,5 @@
 // Variables and selectors
-// Move out of global scope
+// TODO: Move out of global scope
 const gameContainer = document.querySelector('#game-container');
 let gameContainerHeight = window.innerHeight * 0.7;
 let lossCount = 0;
@@ -35,7 +35,7 @@ const generateWordArray = (string) => {
     if (wordArray.length < 1) {
         wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
         wordArray.forEach(word => {
-            gameContainer.innerHTML += `<span>${word}</span>`;
+            gameContainer.innerHTML += `<div><img src='./img/invader-down.png' class='space-invader-down'><span>${word}</span></div>`;
         })
     }
 }
