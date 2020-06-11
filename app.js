@@ -1,6 +1,6 @@
 // Variables and selectors
 // TODO: Move out of global scope
-const gameContainer = document.querySelector('#game-container');
+const gameContainer = document.getElementById('game-container');
 let gameContainerHeight = window.innerHeight * 0.7;
 let lossCount = 0;
 let winCount = 0;
@@ -8,16 +8,22 @@ let wordArray = [];
 let wordsPerMinute = 0;
 let lettersTyped = '';
 
+
+
 // Start/reset game
 document.querySelector('button').addEventListener('click', () => {
     lettersTyped = '';
-    gameContainer.innerHTML = '';
+    gameContainer.innerHTML = '<img id="player-ship" src="./img/player-ship.png" alt="player"><svg></svg>';
     gameContainer.classList.remove('move-words-down', 'end-game-container');
     wordArray = [];
     generateWordArray(string);
     wordsDown();
 })
 
+let ship = document.getElementById('player-ship');
+let svgBox = document.querySelector('svg');
+
+ 
 // Generate random 'words'
 // const letterArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
@@ -35,20 +41,23 @@ const generateWordArray = (string) => {
     if (wordArray.length < 1) {
         wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
         wordArray.forEach(word => {
-            gameContainer.innerHTML += `<div><img src='./img/invader-down.png' class='space-invader-down'><span>${word}</span></div>`;
+            let element = `<div><img src='./img/invader-down.png' class='space-invader-down'><span>${word}</span></div>`;
+            let ship = document.getElementById('player-ship');
+            let node = document.createElement('span');
+            node.innerHTML = element;
+            let parent = ship.parentNode;
+            parent.insertBefore(node, ship);
         })
     }
 }
 
 // Start words moving down
 let wordsDown = () => {
-    setTimeout(() => {
-        gameContainer.classList.add('move-words-down');
-        checkPos();
-    }, 100)
+    gameContainer.classList.add('move-words-down');
+    checkPos();
 }
 
-// Start timer - need to move into function and still be able to return value
+// Start timer for WPM calculation- need to move into function and still be able to return value
 const startTime = new Date();
 
 // Capture player physical keyboard input
@@ -59,25 +68,29 @@ document.addEventListener('keydown', (event) => {
         lettersTyped += event.key;
     }   
     checkArray();
-  });
+});
 
 // Handles keyboard input in text box (required for mobile)
-    let input = document.querySelector('input');
-    inputHandler = () => {
-        lettersTyped += input.value;
-        checkArray();
-    }  
-  input.addEventListener('input', inputHandler);
+let input = document.querySelector('input');
+inputHandler = () => {
+    lettersTyped += input.value;
+    checkArray();
+}  
+input.addEventListener('input', inputHandler);
 
 // Delete words when player has typed
-// TO FIX: does all words at once, need to change to just the one nearest end of array
 const checkArray = () => {
     wordArray.forEach((word, index) => {
-        if (lettersTyped.includes(word)) {
-            // gameContainer.children[wordArray.indexOf(word)].classList.add('delete');
+        if (lettersTyped.includes(word) && !gameContainer.children[index].classList.contains('delete')) {
             gameContainer.children[index].classList.add('delete');
+            lettersTyped = '';
+            // Get position of word and fire laser function
+            let wordLeftOffset = gameContainer.children[index].offsetLeft + (window.getComputedStyle(gameContainer.children[index]).getPropertyValue('width').slice(0, -2) / 2);
+            let wordTopOffset = gameContainer.children[index].offsetTop;
+            console.log(wordLeftOffset, wordTopOffset)
+            createLaser(wordLeftOffset, wordTopOffset);
             checkWordsDeleted();
-        }
+        } 
     })
 }
 
@@ -94,11 +107,20 @@ const checkWordsDeleted = () => {
     }
 }
 
+// Create svg line between word and laser
+let createLaser = (wordX, wordY) => {
+    let ship = document.getElementById('player-ship');
+    shipLeftOffset = ship.offsetLeft + (window.getComputedStyle(ship).getPropertyValue('width').slice(0, -2) / 2)
+    console.log(shipLeftOffset);
+    console.log(ship.offsetTop);
+    let svgBox = document.querySelector('svg');
+    svgBox.innerHTML = `<line x1="300" y1="${ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`
+}
+
 // Trigger end game when word reaches bottom
 const checkPosition = (toggle) => {
     if (toggle === 1) {
     for (let i = 0; i < gameContainer.children.length; i++) {
-        // console.log(`contHeight: ${gameContainerHeight} offsettop:${gameContainer.children[i].offsetTop}`);
         if (!gameContainer.children[i].classList.contains('delete')
         && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) {
             gameOver();
@@ -109,7 +131,7 @@ const checkPosition = (toggle) => {
 
 // call checkPosition each 100ms
 // Only call after words would reach bottom and also only when words move down a line
-const checkPos = (toggle=1) => {if (toggle === 1) {setInterval(checkPosition, 100, 1)} else return};
+const checkPos = (toggle=1) => {if (toggle === 1) {setInterval(checkPosition, 1000, 1)} else return};
 
 // End round actions 
 const endRound = () => {
@@ -147,3 +169,5 @@ const gameOver = () => {
 // Alter text source
 // Check that WPM score is correct
 // Animate aliens behind words
+// EMs for scale
+// Animate ship and make non-static laser

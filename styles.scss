@@ -35,7 +35,32 @@ body {
       flex-direction: column;
       height: 60px;
     }
-    
+   
+    // Animate laser
+    @keyframes laser {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    svg {
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 43px);
+      left: 0;
+      top: 0;
+
+      line {
+        animation-name: laser;
+        animation-duration: 0.2s;
+        animation-fill-mode: forwards;
+        animation-direction: normal;
+      }
+    }
+
     span {
       margin-right: 5px;
       margin-left: 5px;
@@ -50,7 +75,7 @@ body {
     background-size: contain;
   }
 
-  .player-ship {
+  #player-ship {
     width: 70px;
     position: absolute;
     bottom: 0;
@@ -101,9 +126,10 @@ body {
 
   .delete {
     animation-name: delete;
-    animation-duration: .3s;
+    animation-duration: .2s;
     animation-fill-mode: forwards;
     animation-iteration-count: 3;
+    z-index: 10;
   }
 
   // Game over classes

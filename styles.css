@@ -47,6 +47,43 @@ body section div {
   height: 60px;
 }
 
+@-webkit-keyframes laser {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes laser {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+body section svg {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 43px);
+  left: 0;
+  top: 0;
+}
+
+body section svg line {
+  -webkit-animation-name: laser;
+          animation-name: laser;
+  -webkit-animation-duration: 0.2s;
+          animation-duration: 0.2s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-direction: normal;
+          animation-direction: normal;
+}
+
 body section span {
   margin-right: 5px;
   margin-left: 5px;
@@ -59,7 +96,7 @@ body .space-invader-down {
   background-size: contain;
 }
 
-body .player-ship {
+body #player-ship {
   width: 70px;
   position: absolute;
   bottom: 0;
@@ -146,12 +183,13 @@ body .move-words-down {
 body .delete {
   -webkit-animation-name: delete;
           animation-name: delete;
-  -webkit-animation-duration: .3s;
-          animation-duration: .3s;
+  -webkit-animation-duration: .2s;
+          animation-duration: .2s;
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
   -webkit-animation-iteration-count: 3;
           animation-iteration-count: 3;
+  z-index: 10;
 }
 
 @-webkit-keyframes end-game {
