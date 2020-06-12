@@ -41,7 +41,7 @@ const generateWordArray = (string) => {
     if (wordArray.length < 1) {
         wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
         wordArray.forEach(word => {
-            let element = `<div><img src='./img/invader-down.png' class='space-invader-down'><span>${word}</span></div>`;
+            let element = `<div><div class='space-invader-down'></div><span>${word}</span></div>`;
             let ship = document.getElementById('player-ship');
             let node = document.createElement('span');
             node.innerHTML = element;
@@ -59,6 +59,7 @@ let wordsDown = () => {
 
 // Start timer for WPM calculation- need to move into function and still be able to return value
 const startTime = new Date();
+console.log(startTime);
 
 // Capture player physical keyboard input
 document.addEventListener('keydown', (event) => {
@@ -129,7 +130,7 @@ const checkPosition = (toggle) => {
             gameOver();
         }
     }}
-    console.log('fired');
+    console.log('check position fired');
 }
 
 // call checkPosition each 100ms
@@ -143,7 +144,7 @@ const endRound = () => {
     gameContainer.classList.remove('move-words-down');
     gameContainer.classList.add('end-game-container');
     // Why doesn't this stop the function? 
-    checkPosition(0);
+    // checkPosition(0);
 }
 
 // Show round win screen
@@ -159,6 +160,7 @@ const roundWin = () => {
 const gameOver = () => {
     lossCount += 1;
     let endTime = new Date() - startTime;
+    console.log(endTime);
     // Need to add words to the below and move to endRound
     wordsPerMinute = parseInt(endTime / 1000 / wordArray.length * 60);
     gameContainer.innerHTML = `<h2 class="end-game">game over</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
@@ -166,11 +168,10 @@ const gameOver = () => {
 }
     
 // Non-MVP:
-// Show player progress in word
 // Words firing letters at player
 // Alter difficulty (speed/word length) 
 // Alter text source
 // Check that WPM score is correct
 // Animate aliens behind words
-// ems for scale on mobile
 // Animate ship and make non-static laser
+// Fix timer - trigger with function- it gives times in ms

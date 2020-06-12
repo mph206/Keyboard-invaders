@@ -1,4 +1,4 @@
-$animation-duration: 60s;
+$animation-duration: 100s;
 
 // Start game styles
 * {
@@ -78,11 +78,36 @@ body {
     }
   }
 
-  // Space invaders
+  // Animate invaders
+  @keyframes invader {
+    0% {
+    background-image: url('./img/invader-down.png');
+    }
+    100% {
+      background-image: url('./img/invader-up.svg');
+    }
+  }
+
   .space-invader-down {
+    background-image: url('./img/invader-down.png');
+    animation-name: invader;
+    animation-duration: calc(#{$animation-duration} / 12 / 8);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
     width: 45px;
-    border: 0px solid white;
+    height: 33px;
+    background-repeat: no-repeat;
     background-size: contain;
+  }
+
+  .move-words-down {
+    animation-name: padding-sides, padding-grow;
+    animation-duration: calc(#{$animation-duration} / 12), $animation-duration;
+    animation-timing-function: steps(9), steps(12);
+    // animation-fill-mode: both, both;
+    animation-iteration-count: 12, 24;
+    animation-direction: alternate, normal;
   }
 
   // TODO: Check colour
