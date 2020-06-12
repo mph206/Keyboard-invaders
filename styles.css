@@ -110,6 +110,12 @@ body section span {
   0% {
     background-image: url("./img/invader-down.png");
   }
+  50% {
+    background-image: url("./img/invader-down.png");
+  }
+  51% {
+    background-image: url("./img/invader-up.svg");
+  }
   100% {
     background-image: url("./img/invader-up.svg");
   }
@@ -118,6 +124,12 @@ body section span {
 @keyframes invader {
   0% {
     background-image: url("./img/invader-down.png");
+  }
+  50% {
+    background-image: url("./img/invader-down.png");
+  }
+  51% {
+    background-image: url("./img/invader-up.svg");
   }
   100% {
     background-image: url("./img/invader-up.svg");
@@ -130,12 +142,10 @@ body .space-invader-down {
           animation-name: invader;
   -webkit-animation-duration: calc(100s / 12 / 8);
           animation-duration: calc(100s / 12 / 8);
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
+  -webkit-animation-timing-function: steps(2);
+          animation-timing-function: steps(2);
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
-  -webkit-animation-direction: alternate;
-          animation-direction: alternate;
   width: 45px;
   height: 33px;
   background-repeat: no-repeat;

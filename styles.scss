@@ -83,6 +83,13 @@ body {
     0% {
     background-image: url('./img/invader-down.png');
     }
+    50% {
+    background-image: url('./img/invader-down.png');
+    }
+    51% {
+      background-image: url('./img/invader-up.svg');
+
+    }
     100% {
       background-image: url('./img/invader-up.svg');
     }
@@ -92,9 +99,9 @@ body {
     background-image: url('./img/invader-down.png');
     animation-name: invader;
     animation-duration: calc(#{$animation-duration} / 12 / 8);
-    animation-timing-function: linear;
+    animation-timing-function: steps(2);
     animation-iteration-count: infinite;
-    animation-direction: alternate;
+    // animation-direction: alternate;
     width: 45px;
     height: 33px;
     background-repeat: no-repeat;
