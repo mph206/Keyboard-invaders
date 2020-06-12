@@ -106,10 +106,63 @@ body section span {
   }
 }
 
+@-webkit-keyframes invader {
+  0% {
+    background-image: url("./img/invader-down.png");
+  }
+  50% {
+    background-image: url("./img/invader-down.png");
+  }
+  51% {
+    background-image: url("./img/invader-up.svg");
+  }
+  100% {
+    background-image: url("./img/invader-up.svg");
+  }
+}
+
+@keyframes invader {
+  0% {
+    background-image: url("./img/invader-down.png");
+  }
+  50% {
+    background-image: url("./img/invader-down.png");
+  }
+  51% {
+    background-image: url("./img/invader-up.svg");
+  }
+  100% {
+    background-image: url("./img/invader-up.svg");
+  }
+}
+
 body .space-invader-down {
+  background-image: url("./img/invader-down.png");
+  -webkit-animation-name: invader;
+          animation-name: invader;
+  -webkit-animation-duration: calc(100s / 12 / 8);
+          animation-duration: calc(100s / 12 / 8);
+  -webkit-animation-timing-function: steps(2);
+          animation-timing-function: steps(2);
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
   width: 45px;
-  border: 0px solid white;
+  height: 33px;
+  background-repeat: no-repeat;
   background-size: contain;
+}
+
+body .move-words-down {
+  -webkit-animation-name: padding-sides, padding-grow;
+          animation-name: padding-sides, padding-grow;
+  -webkit-animation-duration: calc(100s / 12), 100s;
+          animation-duration: calc(100s / 12), 100s;
+  -webkit-animation-timing-function: steps(9), steps(12);
+          animation-timing-function: steps(9), steps(12);
+  -webkit-animation-iteration-count: 12, 24;
+          animation-iteration-count: 12, 24;
+  -webkit-animation-direction: alternate, normal;
+          animation-direction: alternate, normal;
 }
 
 body #player-ship {
@@ -170,8 +223,8 @@ body #player-ship {
 body .move-words-down {
   -webkit-animation-name: padding-sides, padding-grow;
           animation-name: padding-sides, padding-grow;
-  -webkit-animation-duration: calc(60s / 12), 60s;
-          animation-duration: calc(60s / 12), 60s;
+  -webkit-animation-duration: calc(100s / 12), 100s;
+          animation-duration: calc(100s / 12), 100s;
   -webkit-animation-timing-function: steps(8), steps(12);
           animation-timing-function: steps(8), steps(12);
   -webkit-animation-iteration-count: 12, 24;
