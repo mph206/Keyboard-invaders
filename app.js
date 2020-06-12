@@ -9,13 +9,19 @@ let wordsPerMinute = 0;
 let lettersTyped = '';
 let sound = new Audio('./laser.wav');
 let sound2 = new Audio('./laser2.wav');
+let startTime;
+let endTime;
+
 
 // Start/reset game
+// TODO: fix restart button
 document.querySelector('button').addEventListener('click', () => {
+    gameContainer.classList.remove('end-game-container', 'move-words-down');
     lettersTyped = '';
     gameContainer.innerHTML = '<img id="player-ship" src="./img/player-ship.png" alt="player"><svg></svg>'; 
-    gameContainer.classList.remove('move-words-down', 'end-game-container');
     wordArray = [];
+    startTime = new Date();
+    console.log(startTime);
     generateWordArray(string);
     wordsDown();
 })
@@ -58,8 +64,6 @@ let wordsDown = () => {
 }
 
 // Start timer for WPM calculation- need to move into function and still be able to return value
-const startTime = new Date();
-console.log(startTime);
 
 // Capture player physical keyboard input
 document.addEventListener('keydown', (event) => {
@@ -97,8 +101,9 @@ const checkArray = () => {
 }
 
 // Compares words with class of deleted against length of array; if equals triggers roundWin
+let deletedWords = 0;
 const checkWordsDeleted = () => {
-    let deletedWords = 0;
+    deletedWords = 0;
     for (let i = 0; i < gameContainer.children.length; i++) {
         if (gameContainer.children[i].classList.contains('delete')) {
             deletedWords += 1;
@@ -149,8 +154,8 @@ const endRound = () => {
 
 // Show round win screen
 const roundWin = () => {
-    let endTime = new Date() - startTime;
-    wordsPerMinute = parseInt(endTime / 1000 / wordArray.length * 60);
+    endTime = new Date() - startTime;
+    wordsPerMinute = parseInt(deletedWords / (endTime / 1000 / 60));
     winCount += 1;   
     gameContainer.innerHTML = `<h2 class="end-game">round won</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
     endRound();
@@ -159,19 +164,20 @@ const roundWin = () => {
 // Show game over screen 
 const gameOver = () => {
     lossCount += 1;
-    let endTime = new Date() - startTime;
+    endTime = new Date() - startTime;
     console.log(endTime);
     // Need to add words to the below and move to endRound
-    wordsPerMinute = parseInt(endTime / 1000 / wordArray.length * 60);
+    wordsPerMinute = parseInt(deletedWords / (endTime / 1000 / 60));
     gameContainer.innerHTML = `<h2 class="end-game">game over</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
     endRound();
 }
+
+
     
 // Non-MVP:
 // Words firing letters at player
 // Alter difficulty (speed/word length) 
 // Alter text source
 // Check that WPM score is correct
-// Animate aliens behind words
 // Animate ship and make non-static laser
 // Fix timer - trigger with function- it gives times in ms

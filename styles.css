@@ -152,19 +152,6 @@ body .space-invader-down {
   background-size: contain;
 }
 
-body .move-words-down {
-  -webkit-animation-name: padding-sides, padding-grow;
-          animation-name: padding-sides, padding-grow;
-  -webkit-animation-duration: calc(100s / 12), 100s;
-          animation-duration: calc(100s / 12), 100s;
-  -webkit-animation-timing-function: steps(9), steps(12);
-          animation-timing-function: steps(9), steps(12);
-  -webkit-animation-iteration-count: 12, 24;
-          animation-iteration-count: 12, 24;
-  -webkit-animation-direction: alternate, normal;
-          animation-direction: alternate, normal;
-}
-
 body #player-ship {
   width: 40px;
   position: absolute;

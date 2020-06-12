@@ -108,15 +108,6 @@ body {
     background-size: contain;
   }
 
-  .move-words-down {
-    animation-name: padding-sides, padding-grow;
-    animation-duration: calc(#{$animation-duration} / 12), $animation-duration;
-    animation-timing-function: steps(9), steps(12);
-    // animation-fill-mode: both, both;
-    animation-iteration-count: 12, 24;
-    animation-direction: alternate, normal;
-  }
-
   // TODO: Check colour
   #player-ship {
     width: 40px;
