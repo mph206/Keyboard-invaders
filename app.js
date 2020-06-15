@@ -1,14 +1,14 @@
 // Variables and selectors
 // TODO: Move out of global scope
 const gameContainer = document.getElementById('game-container');
-let gameContainerHeight = window.innerHeight * 0.7;
+let gameContainerHeight = window.innerHeight * 0.7; // O: const
 let lossCount = 0;
 let winCount = 0;
 let wordArray = [];
 let wordsPerMinute = 0;
 let lettersTyped = '';
-let sound = new Audio('./laser.wav');
-let sound2 = new Audio('./laser2.wav');
+let sound = new Audio('./laser.wav'); // O: const
+let sound2 = new Audio('./laser2.wav'); // O: const
 let startTime;
 let endTime;
 
@@ -55,12 +55,13 @@ const generateWordArray = (string) => {
             parent.insertBefore(node, ship);
         })
     }
-}
+} // O: This function does two jobs - generates the array and puts the content on the page. You could have it as two functions - the first generates the array (as the function describes) and the second renders it to the page. You could also use a map rather than forEach to produce the html into a variable, and add it onto the page in one go.
+// O: Use a lot more const than let. Basically use a const unless it shouts at you - better practice.
 
 // Start words moving down
-let wordsDown = () => {
+let wordsDown = () => { // O: const
     gameContainer.classList.add('move-words-down');
-    checkPos();
+    checkPos(); // O: checkPosition -> Always use full descriptive words for function/variable names
 }
 
 // Start timer for WPM calculation- need to move into function and still be able to return value
@@ -72,16 +73,17 @@ document.addEventListener('keydown', (event) => {
     } else {
         lettersTyped += event.key;
     }   
-    checkArray();
+    checkArray(); // O: Check array for what? Otherwise this bit's v nice
 });
 
 // Handles keyboard input in text box (required for mobile)
-let input = document.querySelector('input');
-inputHandler = () => {
+let input = document.querySelector('input'); // O: const
+inputHandler = () => { // O: const
     lettersTyped += input.value;
     checkArray();
 }  
 input.addEventListener('input', inputHandler);
+// O: Try to follow one pattern, either the named callback or anonymous (in the above event listeners). Could also refactor these events to both use the same function
 
 // Delete words when player has typed
 // TODO: delete words from bottom first rather than top
@@ -92,16 +94,16 @@ const checkArray = () => {
             lettersTyped = '';
             // Get position of word and fire laser function
             let wordLeftOffset = gameContainer.children[index].offsetLeft + (window.getComputedStyle(gameContainer.children[index]).getPropertyValue('width').slice(0, -2) / 2);
-            let wordTopOffset = gameContainer.children[index].offsetTop;
-            console.log(wordLeftOffset, wordTopOffset)
-            createLaser(wordLeftOffset, wordTopOffset);
+            let wordTopOffset = gameContainer.children[index].offsetTop; // O: consts
+            console.log(wordLeftOffset, wordTopOffset) // O: remove console logs before submitting code for future projects
+            createLaser(wordLeftOffset, wordTopOffset); // O: nice 
             checkWordsDeleted();
         } 
     })
 }
 
 // Compares words with class of deleted against length of array; if equals triggers roundWin
-let deletedWords = 0;
+let deletedWords = 0; // O: is this being used anywhere other than in the function? If not remove. 
 const checkWordsDeleted = () => {
     deletedWords = 0;
     for (let i = 0; i < gameContainer.children.length; i++) {
@@ -115,14 +117,14 @@ const checkWordsDeleted = () => {
 }
 
 // Create svg line between word and laser
-let createLaser = (wordX, wordY) => {
+let createLaser = (wordX, wordY) => { // O: CONST
     let ship = document.getElementById('player-ship');
     shipLeftOffset = ship.offsetLeft + (window.getComputedStyle(ship).getPropertyValue('width').slice(0, -2) / 2)
     let svgBox = document.querySelector('svg');
     svgBox.innerHTML = `<line x1="${window.getComputedStyle(gameContainer).getPropertyValue('width').slice(0, -2) / 2}" y1="${ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`
     let random = Math.floor(Math.random() * 2) + 1;
-    if (random === 1) sound.play()
-    else sound2.play();
+    if (random === 1) sound.play() // O: semicolon
+    else sound2.play(); // O: For if/else always use brackets - oneline only for if.
 }
 
 // Trigger end game when word reaches bottom
@@ -131,7 +133,7 @@ const checkPosition = (toggle) => {
     for (let i = 0; i < gameContainer.children.length-2; i++) {
         if (!gameContainer.children[i].classList.contains('delete')
         // Check this is still bottom of div
-        && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) {
+        && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) { // O: For long if expressions, refactor the logic into a small "checkDistanceFromTop()" function and run in the brackets
             gameOver();
         }
     }}
@@ -141,6 +143,7 @@ const checkPosition = (toggle) => {
 // call checkPosition each 100ms
 // Only call after words would reach bottom and also only when words move down a line
 const checkPos = (toggle=1) => {if (toggle === 1) {setInterval(checkPosition, 1000, 1)} else return};
+// O: better as a ternary. Nice tho: const checkPos = (toggle=1) => (toggle === 1) ? setInterval(checkPosition, 1000, 1) : null;
 
 // End round actions 
 const endRound = () => {
@@ -172,6 +175,7 @@ const gameOver = () => {
     endRound();
 }
 
+// O: Overall, super nice. See notes above. Main thing on global variables - they could all be set as attributes of a Game class, which would package it all nicely. At the moment because not many of your functions return, you're in a bit of a hybrid state between functional and OOP. The way it's written lends itself well to being converted into classes -> would recommend trying this before final version.
 
     
 // Non-MVP:
