@@ -1,5 +1,3 @@
-// import Words from './Words'
-
 export default class Game {
     constructor() {
         this.gameContainer = document.getElementById('game-container');
@@ -13,19 +11,37 @@ export default class Game {
         const sound2 = new Audio('./laser2.wav'); 
         this.ship = document.getElementById('player-ship');
         this.svgBox = document.querySelector('svg');
+        this.words = new Words();
+        this.defaultString = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own."
     }
 
     startGame() {
-        // e.preventDefault(); // check that this stops space from hitting button
         this.newRound();
         this.physicalKeyboardListener();
         this.softKeyboardListener();
     }
 
+    generateWordArray(string) {
+        const wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
+        const wordsHTML = wordArray.map(word => {
+            return `<div><div class='space-invader-down'></div><span>${word}</span></div>`;
+        })
+        this.printWordsToPage(wordsHTML);
+    } 
+
+    printWordsToPage(html) {
+        this.ship.parentNode.insertBefore(html, ship);
+    }
+
+    wordsDown() {
+        gameContainer.classList.add('move-words-down');
+        checkPos(); // O: checkPosition -> Always use full descriptive words for function/variable names
+    }
+
     newRound() {
         this.gameContainer.classList.remove('end-game-container', 'move-words-down');
         this.gameContainer.innerHTML = '<img id="player-ship" src="./img/player-ship.png" alt="player"><svg></svg>'; 
-        generateWordArray(string);
+        this.generateWordArray(this.defaultString);
         wordsDown();
         this.lettersTyped = '';
         this.wordArray = [];
