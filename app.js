@@ -1,7 +1,10 @@
 import Game from './Game.js'
 
 const game = new Game();
-document.querySelector('button').addEventListener('click', (e) => game.startGame())
+document.querySelector('button').addEventListener('click', (e) => {
+    game.startGame(); 
+    e.preventDefault()
+}) //unselect after clicked?
  
     
 // Non-MVP:
