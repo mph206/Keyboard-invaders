@@ -11,7 +11,6 @@ export default class Game {
         const sound2 = new Audio('./laser2.wav'); 
         this.ship = document.getElementById('player-ship');
         this.svgBox = document.querySelector('svg');
-        this.words = new Words();
         this.defaultString = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own."
     }
 
@@ -21,33 +20,35 @@ export default class Game {
         this.softKeyboardListener();
     }
 
-    generateWordArray(string) {
-        const wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
-        const wordsHTML = wordArray.map(word => {
-            return `<div><div class='space-invader-down'></div><span>${word}</span></div>`;
-        })
-        this.printWordsToPage(wordsHTML);
-    } 
-
-    printWordsToPage(html) {
-        this.ship.parentNode.insertBefore(html, ship);
-    }
-
-    wordsDown() {
-        gameContainer.classList.add('move-words-down');
-        checkPos(); // O: checkPosition -> Always use full descriptive words for function/variable names
-    }
-
     newRound() {
         this.gameContainer.classList.remove('end-game-container', 'move-words-down');
         this.gameContainer.innerHTML = '<img id="player-ship" src="./img/player-ship.png" alt="player"><svg></svg>'; 
         this.generateWordArray(this.defaultString);
-        wordsDown();
+        this.wordsDown();
         this.lettersTyped = '';
         this.wordArray = [];
         this.startTime = new Date();
         this.deletedWords = 0;
     }
+
+    generateWordArray(string) {
+        const wordArray = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split(' ');
+        const wordsHTML = wordArray.map(word => {
+            return `<div><div class='space-invader-down'></div><span>${word}</span></div>`;
+        }).join('')
+        let node = document.createElement('section');
+        node.innerHTML = wordsHTML
+        this.printWordsToPage(node);
+    } 
+
+    printWordsToPage(node) {
+        this.gameContainer.insertBefore(node, this.ship);
+    }
+
+    wordsDown() {
+        this.gameContainer.classList.add('move-words-down');
+        setInterval(this.checkPosition, 1000);
+    }   
 
     physicalKeyboardListener() {
         document.addEventListener('keydown', (event) => {
@@ -67,7 +68,7 @@ export default class Game {
     // TODO: delete words from bottom first rather than top
     checkArray() {
         wordArray.forEach((word, index) => {
-            if (lettersTyped.includes(word) && !this.gameContainer.children[index].classList.contains('delete')) {
+            if (this.lettersTyped.includes(word) && !this.gameContainer.children[index].classList.contains('delete')) {
                 this.gameContainer.children[index].classList.add('delete');
                 this.lettersTyped = '';
                 // Get position of word and fire laser function
@@ -75,7 +76,7 @@ export default class Game {
                 const wordTopOffset = gameContainer.children[index].offsetTop; 
                 this.createLaser(wordLeftOffset, wordTopOffset);
                 this.checkWordsDeleted();
-            } 
+            }
         })
     }
 
@@ -91,10 +92,9 @@ export default class Game {
         }
     }
 
-    // Create svg line between word and laser
     createLaser(wordX, wordY) {
-        shipLeftOffset = this.ship.offsetLeft + (window.getComputedStyle(this.ship).getPropertyValue('width').slice(0, -2) / 2)
-        this.svgBox.innerHTML = `<line x1="${window.getComputedStyle(this.gameContainer).getPropertyValue('width').slice(0, -2) / 2}" y1="${this.ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`
+        const shipLeftOffset = this.ship.offsetLeft + (window.getComputedStyle(this.ship).getPropertyValue('width').slice(0, -2) / 2);
+        this.svgBox.innerHTML = `<line x1="${window.getComputedStyle(this.gameContainer).getPropertyValue('width').slice(0, -2) / 2}" y1="${ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`;
         const random = Math.floor(Math.random() * 2) + 1;
         if (random === 1) {
             sound.play();
@@ -104,21 +104,16 @@ export default class Game {
     }
 
     // Trigger end game when word reaches bottom
+    // // Only call after words would reach bottom and also only when words move down a line
     checkPosition() {
-        for (let i = 0; i < gameContainer.children.length-2; i++) {
-            if (!gameContainer.children[i].classList.contains('delete')
-            // Check this is still bottom of div
-            && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) { // O: For long if expressions, refactor the logic into a small "checkDistanceFromTop()" function and run in the brackets
+        const checkPositionFromTop = () => (this.gameContainerHeight - this.gameContainer.children[i].offsetTop - 14) < 0;
+        for (let i = 0; i < this.gameContainer.children.length-2; i++) {
+            if (!this.gameContainer.children[i].classList.contains('delete') && checkPositionFromTop) {
                 endRound('won');
             }
         }
         console.log('check position fired');
     }
-
-    // // Only call after words would reach bottom and also only when words move down a line
-    // checkPos(toggle=1) {
-    //     toggle === 1 ? setInterval(checkPosition, 1000, 1) : null;
-    // } 
 
     endRound(outcome) {
         gameContainer.classList.remove('move-words-down');

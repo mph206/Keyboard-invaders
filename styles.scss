@@ -14,33 +14,84 @@ body {
   background-color: black;
   color: #3FFF46;
   
-  section {
+  #game-container {
     border: 2px solid white;
     width: 100%;
     height: 80vh;
-    text-align: justify;
+    // text-align: justify;
     position: relative;
     overflow: hidden;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content: space-around;
+    
+    section {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: space-around;
+
+      // Containers for space invader and words
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 40px;
+        margin: 5px;
+        margin-left: 5px;
+
+        @media screen and (min-width: 600px) {
+          height: 60px;
+        }
+
+        span {
+         
+          color: white;
+          font-size: 0.8em;
+    
+          @media screen and (min-width: 600px) {
+            font-size: 1em;
+          }
+        }
+
+        // Animate invaders
+        @keyframes invader {
+          0% {
+          background-image: url('./img/invader-down.png');
+          }
+          50% {
+          background-image: url('./img/invader-down.png');
+          }
+          51% {
+            background-image: url('./img/invader-up.svg');
+
+          }
+          100% {
+            background-image: url('./img/invader-up.svg');
+          }
+        }
+
+        .space-invader-down {
+          background-image: url('./img/invader-down.png');
+          animation-name: invader;
+          animation-duration: calc(#{$animation-duration} / 12 / 8);
+          animation-timing-function: steps(2);
+          animation-iteration-count: infinite;
+          // animation-direction: alternate;
+          width: 45px;
+          height: 33px;
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+
+
 
     @media screen and (min-width: 900px) {
       width: 900px;
     }
   
-    // Containers for space invader and words
-    div {
-      display: flex;
-      flex-direction: column;
-      height: 40px;
-
-      @media screen and (min-width: 600px) {
-        height: 60px;
-      }
-    }
+    
    
     // Animate laser
     @keyframes laser {
@@ -65,47 +116,6 @@ body {
         animation-fill-mode: forwards;
       }
     }
-
-    span {
-      margin-right: 5px;
-      margin-left: 5px;
-      color: white;
-      font-size: 0.8em;
-
-      @media screen and (min-width: 600px) {
-        font-size: 1em;
-      }
-    }
-  }
-
-  // Animate invaders
-  @keyframes invader {
-    0% {
-    background-image: url('./img/invader-down.png');
-    }
-    50% {
-    background-image: url('./img/invader-down.png');
-    }
-    51% {
-      background-image: url('./img/invader-up.svg');
-
-    }
-    100% {
-      background-image: url('./img/invader-up.svg');
-    }
-  }
-
-  .space-invader-down {
-    background-image: url('./img/invader-down.png');
-    animation-name: invader;
-    animation-duration: calc(#{$animation-duration} / 12 / 8);
-    animation-timing-function: steps(2);
-    animation-iteration-count: infinite;
-    // animation-direction: alternate;
-    width: 45px;
-    height: 33px;
-    background-repeat: no-repeat;
-    background-size: contain;
   }
 
   // TODO: Check colour
