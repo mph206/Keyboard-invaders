@@ -1,14 +1,14 @@
 // Variables and selectors
 // TODO: Move out of global scope
 const gameContainer = document.getElementById('game-container');
-let gameContainerHeight = window.innerHeight * 0.7; // O: const
+const gameContainerHeight = window.innerHeight * 0.7; 
 let lossCount = 0;
 let winCount = 0;
 let wordArray = [];
 let wordsPerMinute = 0;
 let lettersTyped = '';
-let sound = new Audio('./laser.wav'); // O: const
-let sound2 = new Audio('./laser2.wav'); // O: const
+const sound = new Audio('./laser.wav'); 
+const sound2 = new Audio('./laser2.wav'); 
 let startTime;
 let endTime;
 
@@ -56,10 +56,10 @@ const generateWordArray = (string) => {
         })
     }
 } // O: This function does two jobs - generates the array and puts the content on the page. You could have it as two functions - the first generates the array (as the function describes) and the second renders it to the page. You could also use a map rather than forEach to produce the html into a variable, and add it onto the page in one go.
-// O: Use a lot more const than let. Basically use a const unless it shouts at you - better practice.
+
 
 // Start words moving down
-let wordsDown = () => { // O: const
+const wordsDown = () => {
     gameContainer.classList.add('move-words-down');
     checkPos(); // O: checkPosition -> Always use full descriptive words for function/variable names
 }
@@ -77,8 +77,8 @@ document.addEventListener('keydown', (event) => {
 });
 
 // Handles keyboard input in text box (required for mobile)
-let input = document.querySelector('input'); // O: const
-inputHandler = () => { // O: const
+const input = document.querySelector('input'); 
+const inputHandler = () => { 
     lettersTyped += input.value;
     checkArray();
 }  
@@ -93,10 +93,9 @@ const checkArray = () => {
             gameContainer.children[index].classList.add('delete');
             lettersTyped = '';
             // Get position of word and fire laser function
-            let wordLeftOffset = gameContainer.children[index].offsetLeft + (window.getComputedStyle(gameContainer.children[index]).getPropertyValue('width').slice(0, -2) / 2);
-            let wordTopOffset = gameContainer.children[index].offsetTop; // O: consts
-            console.log(wordLeftOffset, wordTopOffset) // O: remove console logs before submitting code for future projects
-            createLaser(wordLeftOffset, wordTopOffset); // O: nice 
+            const wordLeftOffset = gameContainer.children[index].offsetLeft + (window.getComputedStyle(gameContainer.children[index]).getPropertyValue('width').slice(0, -2) / 2);
+            const wordTopOffset = gameContainer.children[index].offsetTop; 
+            createLaser(wordLeftOffset, wordTopOffset);
             checkWordsDeleted();
         } 
     })
@@ -117,14 +116,17 @@ const checkWordsDeleted = () => {
 }
 
 // Create svg line between word and laser
-let createLaser = (wordX, wordY) => { // O: CONST
+const createLaser = (wordX, wordY) => {
     let ship = document.getElementById('player-ship');
     shipLeftOffset = ship.offsetLeft + (window.getComputedStyle(ship).getPropertyValue('width').slice(0, -2) / 2)
     let svgBox = document.querySelector('svg');
     svgBox.innerHTML = `<line x1="${window.getComputedStyle(gameContainer).getPropertyValue('width').slice(0, -2) / 2}" y1="${ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`
     let random = Math.floor(Math.random() * 2) + 1;
-    if (random === 1) sound.play() // O: semicolon
-    else sound2.play(); // O: For if/else always use brackets - oneline only for if.
+    if (random === 1) {
+        sound.play();
+    } else {
+        sound2.play();
+    }
 }
 
 // Trigger end game when word reaches bottom
@@ -142,8 +144,7 @@ const checkPosition = (toggle) => {
 
 // call checkPosition each 100ms
 // Only call after words would reach bottom and also only when words move down a line
-const checkPos = (toggle=1) => {if (toggle === 1) {setInterval(checkPosition, 1000, 1)} else return};
-// O: better as a ternary. Nice tho: const checkPos = (toggle=1) => (toggle === 1) ? setInterval(checkPosition, 1000, 1) : null;
+const checkPos = (toggle=1) => toggle === 1 ? setInterval(checkPosition, 1000, 1) : null;
 
 // End round actions 
 const endRound = () => {
