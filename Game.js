@@ -71,7 +71,7 @@ export default class Game {
             }
         }
         if (this.wordArray.length === this.deletedWords) {
-            this.roundWin();
+            this.endRound('lost');
         }
     }
 
@@ -93,7 +93,7 @@ export default class Game {
             if (!gameContainer.children[i].classList.contains('delete')
             // Check this is still bottom of div
             && (gameContainerHeight - gameContainer.children[i].offsetTop - 14) < 0) { // O: For long if expressions, refactor the logic into a small "checkDistanceFromTop()" function and run in the brackets
-                gameOver();
+                endRound('won');
             }
         }
         console.log('check position fired');
@@ -104,30 +104,12 @@ export default class Game {
     //     toggle === 1 ? setInterval(checkPosition, 1000, 1) : null;
     // } 
 
-    endRound() {
+    endRound(outcome) {
         gameContainer.classList.remove('move-words-down');
         gameContainer.classList.add('end-game-container');
-        
-
-    }
-
-    // Show round win screen
-    roundWin() {
         const endTime = new Date() - this.startTime;
         this.wordsPerMinute = parseInt(this.deletedWords / (endTime / 1000 / 60));
-        this.winCount += 1;   
-        this.gameContainer.innerHTML = `<h2 class="end-game">round won</h2><p class="round-score">Won ${this.winCount} - ${this.lossCount} Lost</p><p class="round-score">WPM: ${this.wordsPerMinute}</p>`;
-        endRound();
+        outcome === 'won' ? this.winCount += 1 : this.lossCount += 1;
+        this.gameContainer.innerHTML = `<h2 class="end-game">round ${outcome}</h2><p class="round-score">Won ${this.winCount} - ${this.lossCount} Lost</p><p class="round-score">WPM: ${this.wordsPerMinute}</p>`;
     }
-
-
-    gameOver() {
-        this.lossCount += 1;
-        const endTime = new Date() - startTime;
-        // Need to add words to the below and move to endRound
-        wordsPerMinute = parseInt(deletedWords / (endTime / 1000 / 60));
-        gameContainer.innerHTML = `<h2 class="end-game">game over</h2><p class="round-score">Won ${winCount} - ${lossCount} Lost</p><p class="round-score">WPM: ${wordsPerMinute}</p>`;
-        endRound();
-    }
-
 }
