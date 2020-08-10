@@ -1,6 +1,5 @@
 export default class Game {
     constructor() {
-        // gameContainer = document.getElementById('game-container');
         this.gameContainer = document.getElementById('game-container');
         this.gameContainerHeight = window.innerHeight * 0.7; 
         this.lossCount = 0;
@@ -8,17 +7,16 @@ export default class Game {
         this.wordArray = [];
         this.wordsPerMinute = 0;
         this.lettersTyped = '';
-        const sound = new Audio('./laser.wav'); 
-        const sound2 = new Audio('./laser2.wav'); 
+        this.sound = new Audio('./laser.wav'); 
+        this.sound2 = new Audio('./laser2.wav'); 
         this.ship = document.getElementById('player-ship');
-        this.svgBox = document.querySelector('svg');
+        // this.svgBox = document.querySelector('svg');
         this.defaultString = "No one would have believed in the last years of the nineteenth century that this world was being watched keenly and closely by intelligences greater than man's and yet as mortal as his own.";
         this.shipContainer;
     }
 
     startGame() {
         this.newRound();
-        console.log(this.gameContainer)
         this.physicalKeyboardListener();
         this.softKeyboardListener();
     }
@@ -26,6 +24,7 @@ export default class Game {
     newRound() {
         this.gameContainer.classList.remove('end-game-container', 'move-words-down');
         this.gameContainer.innerHTML = '<img id="player-ship" src="./img/player-ship.png" alt="player"><svg></svg>'; 
+        this.svgBox = document.querySelector('svg');
         this.lettersTyped = '';
         this.wordArray = [];
         this.startTime = new Date();
@@ -90,10 +89,12 @@ export default class Game {
         for (let i = 0; i < this.shipContainer.children.length; i++) {
             if (this.shipContainer.children[i].classList.contains('delete')) {
                 this.deletedWords += 1;
+                console.log(this.deletedWords)
+                console.log(this.wordArray.length)
             }
         }
         if (this.wordArray.length === this.deletedWords) {
-            this.endRound('lost');
+            this.endRound('won');
         }
     }
 
@@ -102,21 +103,10 @@ export default class Game {
     checkPosition() {
         for (let i = 0; i < this.shipContainer.children.length-2; i++) {
             if (!this.shipContainer.children[i].classList.contains('delete') && (this.gameContainerHeight - this.shipContainer.children[i].offsetTop - 14) < 0) {
-                endRound('won');
+                this.endRound('lost');
             }
         }
         console.log('check position fired');
-    }
-
-    createLaser = (wordX, wordY) => {
-        const shipOffsetLeft = window.getComputedStyle(this.gameContainer).getPropertyValue('width').slice(0, -2) / 2;
-        this.svgBox.innerHTML = `<line x1="${shipOffsetLeft}" y1="${this.ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`;
-        const random = Math.floor(Math.random() * 2) + 1;
-        if (random === 1) {
-            this.sound.play(); // reduce to one line
-        } else {
-           this.sound2.play();
-        }
     }
 
     endRound(outcome) {
@@ -127,4 +117,17 @@ export default class Game {
         outcome === 'won' ? this.winCount += 1 : this.lossCount += 1;
         this.gameContainer.innerHTML = `<h2 class="end-game">round ${outcome}</h2><p class="round-score">Won ${this.winCount} - ${this.lossCount} Lost</p><p class="round-score">WPM: ${this.wordsPerMinute}</p>`;
     }
+
+    createLaser(wordX, wordY) {
+        const shipOffsetLeft = window.getComputedStyle(this.gameContainer).getPropertyValue('width').slice(0, -2) / 2;
+        const ship = document.getElementById('player-ship');
+        this.svgBox.innerHTML = `<line x1="${shipOffsetLeft}" y1="${ship.offsetTop}" x2="${wordX}" y2="${wordY}" style="stroke:rgb(255,0,0);stroke-width:2" />`;
+        console.log(this.svgBox)
+        const random = Math.floor(Math.random() * 2) + 1;
+        if (random === 1) {
+            this.sound.play(); // reduce to one line
+        } else {
+           this.sound2.play();
+        }
+    }    
 }

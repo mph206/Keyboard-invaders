@@ -1,7 +1,7 @@
 import Game from './Game.js';
 
-const gameContainer = document.getElementById('game-container');
-const gameContainerHeight = window.innerHeight * 0.7; 
+// const gameContainer = document.getElementById('game-container');
+// const gameContainerHeight = window.innerHeight * 0.7; 
 
 const game = new Game();
 
